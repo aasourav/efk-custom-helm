@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: Secret
+metadata:
+ name: efk-elasticsearch-sec
+ namespace: core-ns
+data:
+ password: YWVzMTIzNA==
+ username: YWVz
+type: Opaque
+
