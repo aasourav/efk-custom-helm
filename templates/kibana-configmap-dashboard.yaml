@@ -2,7 +2,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: kibana-data
-  namespace: core-ns
+  namespace: {{.Values.namespace}}
   labels:
     app.kubernetes.io/managed-by: Helm
 data:
@@ -30,10 +30,10 @@ data:
     function import_dashboards {
       echo "Importing dashboards..."
       sleep 30
-      curl -X DELETE -u aes:aes1234 http://${KIBANA_URL}:${KIBANA_PORT}/application-log/api/saved_objects/config/8.14.1 -H 'kbn-xsrf: true'
-      curl -X DELETE -u aes:aes1234 http://${KIBANA_URL}:${KIBANA_PORT}/application-log/api/saved_objects/config-global/8.14.1 -H 'kbn-xsrf: true'
+      curl -X DELETE -u ${KIBANA_USERNAME}:${KIBANA_PASSWORD} http://${KIBANA_URL}:${KIBANA_PORT}/application-log/api/saved_objects/config/8.14.1 -H 'kbn-xsrf: true'
+      curl -X DELETE -u ${KIBANA_USERNAME}:${KIBANA_PASSWORD} http://${KIBANA_URL}:${KIBANA_PORT}/application-log/api/saved_objects/config-global/8.14.1 -H 'kbn-xsrf: true'
 
-      OUTPUT=$(curl --user aes:aes1234 -X POST http://${KIBANA_URL}:${KIBANA_PORT}/application-log/api/saved_objects/_import -H 'kbn-xsrf: true' --form file=@/kibana/file.ndjson)
+      OUTPUT=$(curl --user ${KIBANA_USERNAME}:${KIBANA_PASSWORD} -X POST http://${KIBANA_URL}:${KIBANA_PORT}/application-log/api/saved_objects/_import -H 'kbn-xsrf: true' --form file=@/kibana/file.ndjson)
       SUCCESS=$(echo ${OUTPUT} | grep -o '"success":true' | wc -l)
       if [[ ${SUCCESS} == "1" ]]; then
         printf "\n########## Imported dashboards successfully! #############################\n"

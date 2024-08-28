@@ -2,7 +2,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: fluentd-config
-  namespace: core-ns
+  namespace: {{.Values.namespace}}
 data:
   fluent.conf: |
     <source>
@@ -34,7 +34,7 @@ data:
     </filter>
     <match **>
       @type elasticsearch
-      host efk-elasticsearch-es-http.core-ns.svc.cluster.local
+      host "#{ENV['FLUENT_ELASTICSEARCH_HOST'] || 'efk-elasticsearch-es-http.core-ns.svc.cluster.local'}"
       port "#{ENV['FLUENT_ELASTICSEARCH_PORT'] || '9200'}"
       user "#{ENV['FLUENT_ELASTICSEARCH_USER'] || 'aes'}"
       password "#{ENV['FLUENT_ELASTICSEARCH_PASSWORD'] || 'aes1234'}"

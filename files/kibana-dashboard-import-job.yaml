@@ -26,6 +26,10 @@ spec:
               value: "efk-kibana-kb-http.core-ns.svc.cluster.local"
             - name: KIBANA_PORT
               value: "5601"
+            - name: KIBANA_USERNAME
+              value: "aes"
+            - name: KIBANA_PASSWORD
+              value: "aes1234"
           command: ["/bin/sh", "/kibana/curl-script.sh"]
           volumeMounts:
             - name: kibana-data

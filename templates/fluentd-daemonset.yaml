@@ -2,13 +2,13 @@ apiVersion: v1
 kind: ServiceAccount
 metadata:
   name: fluentd
-  namespace: core-ns
+  namespace: {{ .Values.namespace }}
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
   name: fluentd
-  namespace: core-ns
+  namespace: {{ .Values.namespace }}
   labels:
     app.kubernetes.io/managed-by: Helm
   annotations:
@@ -29,7 +29,7 @@ kind: ClusterRoleBinding
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
   name: fluentd
-  namespace: core-ns
+  namespace: {{ .Values.namespace }}
   labels:
     app.kubernetes.io/managed-by: Helm
   annotations:
@@ -42,13 +42,13 @@ roleRef:
 subjects:
 - kind: ServiceAccount
   name: fluentd
-  namespace: core-ns
+  namespace: {{ .Values.namespace }}
 ---
 apiVersion: apps/v1
 kind: DaemonSet
 metadata:
   name: fluentd
-  namespace: core-ns
+  namespace: {{ .Values.namespace }}
   labels:
     app: fluentd
 spec:
@@ -69,15 +69,15 @@ spec:
           image: fluent/fluentd-kubernetes-daemonset:v1.15.3-debian-elasticsearch7-1.1
           env:
             - name:  FLUENT_ELASTICSEARCH_HOST
-              value: "172.19.255.201"
+              value: "efk-elasticsearch-es-http.{{ .Values.namespace }}.svc.cluster.local"
             - name:  FLUENT_ELASTICSEARCH_PORT
               value: "9200"
             - name: FLUENT_ELASTICSEARCH_SCHEME
               value: "http"
             - name: FLUENT_ELASTICSEARCH_USER
-              value: "aes"
+              value: {{ .Values.elasticSearch.username }}
             - name: FLUENT_ELASTICSEARCH_PASSWORD
-              value: "aes1234"
+              value: {{ .Values.elasticSearch.password }}
           resources:
             limits:
               memory: 512Mi
