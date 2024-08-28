@@ -2,7 +2,7 @@ apiVersion: kibana.k8s.elastic.co/v1
 kind: Kibana
 metadata:
   name: efk-kibana
-  namespace: core-ns
+  namespace: {{.Values.namespace}}
 spec:
   version: 8.14.1
   http:
@@ -13,7 +13,7 @@ spec:
   elasticsearchRef:
     name: efk-elasticsearch
   config:
-    server.basePath: "/kibana"
+    server.basePath: "/application-log"
     server.rewriteBasePath: true
   podTemplate:
     spec:
@@ -21,7 +21,7 @@ spec:
       - name: kibana
         readinessProbe:
           httpGet:
-            path: /log
+            path: /application-log
             port: 5601
             scheme: HTTP
           initialDelaySeconds: 10
