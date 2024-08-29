@@ -9,6 +9,7 @@ metadata:
     "helm.sh/hook-delete-policy": before-hook-creation,hook-succeeded
 spec:
   backoffLimit: 0
+  ttlSecondsAfterFinished: 5
   template:
     spec:
       restartPolicy: Never
@@ -19,7 +20,7 @@ spec:
             defaultMode: 0777
       containers:
         - name: kibana-import
-          image: centos:7
+          image: curlimages/curl:8.9.1
           imagePullPolicy: IfNotPresent
           env:
             - name: KIBANA_URL
