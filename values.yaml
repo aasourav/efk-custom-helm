@@ -4,3 +4,4 @@ elasticSearch:
   replicas: 1
   username: aes 
   password: aes1234
+  logRange: 1

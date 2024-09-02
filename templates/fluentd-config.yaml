@@ -12,6 +12,7 @@ data:
       path /var/log/containers/*.log
       pos_file /var/log/fluentd-containers.log.pos
       exclude_path ["/var/log/containers/fluent*"]
+      exclude_path ["/var/log/containers/ingress-nginx*"]
       <parse>
         @type regexp
         #https://regex101.com/r/ZkOBTI/1
