@@ -5,10 +5,10 @@ metadata:
   namespace: {{ .Values.namespace }}
 spec:
   schedule: "0 0 */{{ .Values.elasticSearch.logRange }} * *"
+  failedJobsHistoryLimit: 1
+  successfulJobsHistoryLimit: 1
   jobTemplate:
     spec:
-      failedJobsHistoryLimit: 1
-      successfulJobsHistoryLimit: 1
       template:
         spec:
           volumes:
